@@ -4,6 +4,10 @@ import reportWebVitals from "./reportWebVitals";
 import AppRouter from "./routes";
 import { GlobalStyle } from "./global";
 
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

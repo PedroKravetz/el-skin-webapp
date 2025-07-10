@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import ProductShowcase from "../../components/ProductShowCase";
+import Carrossel from "../../components/Carrossel";
 
 const HomeContainer = styled.main`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
+  width: 100%;
 `;
 
 const ShowcaseTitle = styled.h2`
@@ -14,11 +12,23 @@ const ShowcaseTitle = styled.h2`
   color: #333;
 `;
 
+const CenteredContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto; // Centraliza este container
+`;
+
 function Home() {
   return (
     <HomeContainer>
-      <ShowcaseTitle>nossos queridinhos estão aqui</ShowcaseTitle>
-      <ProductShowcase />
+      <Carrossel />
+      <CenteredContent>
+        <ShowcaseTitle>nossos queridinhos estão aqui</ShowcaseTitle>
+        <ProductShowcase />
+      </CenteredContent>
     </HomeContainer>
   );
 }
