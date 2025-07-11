@@ -99,14 +99,14 @@ const Tag = styled.span`
 
 const getTagColor = (tag: string) => {
   switch (tag.toLowerCase()) {
-    case "proteção":
-      return "#50E3C2"; // Azul-piscina
-    case "rosto":
-      return "#D965B0"; // Rosa
-    case "corpo":
-      return "#F5A623"; // Laranja para variedade
-    default:
-      return "#ccc";
+  case "proteção":
+    return "#50E3C2"; // Azul-piscina
+  case "rosto":
+    return "#D965B0"; // Rosa
+  case "corpo":
+    return "#F5A623"; // Laranja para variedade
+  default:
+    return "#ccc";
   }
 };
 

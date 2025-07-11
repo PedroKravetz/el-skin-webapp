@@ -46,7 +46,7 @@ function NotFound() {
     <NotFoundContainer>
       <ErrorCode>404</ErrorCode>
       <ErrorMessage>Página não encontrada</ErrorMessage>
-      <p style={{ marginBottom: '2rem', color: '#777' }}>
+      <p style={{ marginBottom: "2rem", color: "#777" }}>
         Parece que o link que você seguiu está quebrado ou a página foi removida.
       </p>
       <HomeButton href="/">Voltar para a Home</HomeButton>

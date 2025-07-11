@@ -9,13 +9,13 @@ import FooterLinks from "../FooterLinks";
 import { links } from "../../data/links";
 import styled from "styled-components";
 
- const FooterContainer = styled.footer`
+const FooterContainer = styled.footer`
   background-color: #F5F5F5;
   padding: 2rem;
   border-top: 1px solid #eee;
 `;
 
- const SocialIcons = styled.div`
+const SocialIcons = styled.div`
   display: flex;
   justify-content: center;
   gap: 1.5rem;
