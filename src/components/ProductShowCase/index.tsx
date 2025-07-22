@@ -34,6 +34,7 @@ function ProductShowcase() {
       {produtos.map((produto) => (
         <ProductCard
           key={produto.id}
+          id={produto.id}
           srcImg={produto.image}
           alt={produto.description}
           nome={produto.name}

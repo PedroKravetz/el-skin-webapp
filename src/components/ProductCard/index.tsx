@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import sacola from "../../assets/sacola-de-compras.png";
+import { useCartHook } from "../../hooks/useCartHook";
 
 interface PropsProductCard {
   srcImg: string;
@@ -8,6 +9,7 @@ interface PropsProductCard {
   preco: number;
   descricao: string;
   tags: string[];
+  id: number;
 }
 
 const CardContainer = styled.div`
@@ -99,18 +101,31 @@ const Tag = styled.span`
 
 const getTagColor = (tag: number) => {
   switch (tag) {
-    case 0:
-      return "#50E3C2"; // Azul-piscina
-    case 1:
-      return "#D965B0"; // Rosa
-    case 2:
-      return "#F5A623"; // Laranja para variedade
-    default:
-      return "#ccc";
+  case 0:
+    return "#50E3C2"; // Azul-piscina
+  case 1:
+    return "#D965B0"; // Rosa
+  case 2:
+    return "#F5A623"; // Laranja para variedade
+  default:
+    return "#ccc";
   }
 };
 
 function ProductCard(props: Readonly<PropsProductCard>) {
+  const { adicionarProduto } = useCartHook();
+
+  const onClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    adicionarProduto({
+      id: String(props.id),
+      name: props.nome,
+      price: props.preco,
+      quantity: 0,
+      image: props.srcImg,
+    });
+  };
+
   return (
     <CardContainer>
       <ProductImage
@@ -131,7 +146,11 @@ function ProductCard(props: Readonly<PropsProductCard>) {
       {/* Container para agrupar preço e botão */}
       <ActionContainer>
         <ProductPrice>{"R$ " + props.preco.toFixed(2)}</ProductPrice>
-        <BuyButton>
+        <BuyButton
+          onClick={(event) => {
+            onClick(event);
+          }}
+        >
           comprar
           <CartIcon src={sacola} alt="Ícone de sacola de compras" />
         </BuyButton>
