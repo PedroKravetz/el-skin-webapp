@@ -100,15 +100,12 @@ const Tag = styled.span`
 `;
 
 const getTagColor = (tag: number) => {
+  tag = tag % 2;
   switch (tag) {
-  case 0:
-    return "#50E3C2"; // Azul-piscina
-  case 1:
-    return "#D965B0"; // Rosa
-  case 2:
-    return "#F5A623"; // Laranja para variedade
-  default:
-    return "#ccc";
+    case 0:
+      return "#50E3C2"; // Azul-piscina
+    case 1:
+      return "#D965B0"; // Rosa
   }
 };
 
