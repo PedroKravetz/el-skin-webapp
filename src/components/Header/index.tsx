@@ -3,6 +3,9 @@ import MenuNavegacao from "../MenuNavegacao";
 import sacolaCompras from "../../assets/sacola-de-compras.png";
 import Logo from "../Logo";
 import styled from "styled-components";
+import CartModal from "../CartModal";
+import { useState } from "react";
+import { useCartHook } from "../../hooks/useCartHook";
 
 const HeaderContainer = styled.header`
   background-color: #fff;
@@ -28,14 +31,33 @@ const SacolaDeCompras = styled.img`
 `;
 
 function Header() {
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+
+  function handleOnClick() {
+    setIsCartModalOpen(true);
+  }
+
+  function handleCloseCart() {
+    setIsCartModalOpen(false);
+  }
+
+  const { quantidade } = useCartHook();
+
   return (
     <HeaderContainer>
       <TopBar>
         <Logo /> <BarraPesquisa />
-        <SacolaDeCompras src={sacolaCompras} alt="sacola de compras" />{" "}
+        <div>
+          <SacolaDeCompras
+            src={sacolaCompras}
+            alt="sacola de compras"
+            onClick={handleOnClick}
+          />
+          {quantidade}
+        </div>
       </TopBar>
       <MenuNavegacao />
-      
+      <CartModal isOpen={isCartModalOpen} onClose={handleCloseCart} />
     </HeaderContainer>
   );
 }

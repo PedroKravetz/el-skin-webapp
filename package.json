@@ -11,6 +11,7 @@
     "@types/node": "^16.18.126",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "axios": "^1.10.0",
     "multiformats": "^9.9.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -24,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -46,10 +47,32 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
     "@eslint/js": "^9.31.0",
+    "babel-jest": "^30.0.5",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^16.3.0",
+    "jest": "^27.5.1",
     "typescript-eslint": "^8.36.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx|mjs|cjs)$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!swiper|ssr-window|dom7)/"
+    ],
+    "moduleNameMapper": {
+      "axios": "axios/dist/axios.min.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
+      "\\.(css|less)$": "identity-obj-proxy",
+      "swiper/react": "swiper/swiper-react.mjs",
+      "swiper/css": "identity-obj-proxy"
+    }
   }
 }

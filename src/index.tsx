@@ -7,6 +7,7 @@ import { GlobalStyle } from "./global";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { CartProvider } from "./context/CartContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -14,8 +15,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <GlobalStyle />
-    <AppRouter />
+    <CartProvider>
+      <GlobalStyle />
+      <AppRouter />
+    </CartProvider>
   </React.StrictMode>
 );
 

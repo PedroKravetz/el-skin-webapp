@@ -1,12 +1,37 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules"; // Adicionado Autoplay
-import { carrossel } from "../../data/carrossel";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 // Estilos do Swiper
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface Carrousel {
+  id: number;
+  subtitle: string;
+  title: string;
+  description: string;
+  backgroundImage: string;
+}
+
+const ContentOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  padding: 0 10%;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  align-items: center;
+`;
 
 const StyledSwiperContainer = styled.div`
   width: 100%;
@@ -19,16 +44,22 @@ const StyledSwiperContainer = styled.div`
     border-radius: 50%;
     width: 44px;
     height: 44px;
-    
+
     &:after {
       font-size: 1.2rem;
       font-weight: bold;
     }
   }
 
-  .swiper-button-prev { left: 25px; }
-  .swiper-button-next { right: 25px; }
-  .swiper-pagination-bullet-active { background-color: #fff; }
+  .swiper-button-prev {
+    left: 25px;
+  }
+  .swiper-button-next {
+    right: 25px;
+  }
+  .swiper-pagination-bullet-active {
+    background-color: #fff;
+  }
 `;
 
 // Container para cada slide
@@ -42,26 +73,6 @@ const SlideImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
-
-// Div que ficará sobre a imagem com o conteúdo
-const ContentOverlay = styled.div<{ position: string }>`
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: white;
-  padding: 0 10%;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-
-  ${({ position }) => {
-    switch (position) {
-    case "left": return css`text-align: left; align-items: flex-start;`;
-    case "right": return css`text-align: right; align-items: flex-end;`;
-    default: return css`text-align: center; align-items: center;`;
-    }
-  }}
 `;
 
 // --- Componentes para o texto ---
@@ -83,15 +94,6 @@ const Subtitle = styled.p`
   max-width: 450px;
 `;
 
-const Coupon = styled.p`
-  font-size: 0.9rem;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.25rem 0.75rem;
-  border-radius: 15px;
-  margin-top: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-`;
-
 const ActionButton = styled.a`
   background-color: #8a2be2;
   color: white;
@@ -111,6 +113,17 @@ const ActionButton = styled.a`
 `;
 
 function Carrossel() {
+  const [carrossel, setCarrossel] = useState<Carrousel[]>([]);
+
+  useEffect(() => {
+    axios
+      .get<Carrousel[]>("http://localhost:3001/carousel")
+      .then((resposta) => {
+        console.log(resposta.data);
+        setCarrossel(resposta.data);
+      });
+  }, []);
+
   return (
     <StyledSwiperContainer>
       <Swiper
@@ -126,15 +139,12 @@ function Carrossel() {
         {carrossel.map((item) => (
           <SwiperSlide key={item.id}>
             <SlideContainer>
-              <SlideImage src={item.srcImg} alt={item.alt} />
-              <ContentOverlay position={item.content.position}>
-                {item.content.preTitle && <PreTitle>{item.content.preTitle}</PreTitle>}
-                <Title>{item.content.title}</Title>
-                {item.content.subtitle && <Subtitle>{item.content.subtitle}</Subtitle>}
-                {item.content.coupon && <Coupon>{item.content.coupon}</Coupon>}
-                <ActionButton href={item.content.buttonLink}>
-                  {item.content.buttonText} &rarr;
-                </ActionButton>
+              <SlideImage src={item.backgroundImage} alt={item.description} />
+              <ContentOverlay>
+                {item.subtitle && <PreTitle>{item.subtitle}</PreTitle>}
+                <Title>{item.title}</Title>
+                {item.description && <Subtitle>{item.description}</Subtitle>}
+                <ActionButton>Comprar Agora &rarr;</ActionButton>
               </ContentOverlay>
             </SlideContainer>
           </SwiperSlide>
