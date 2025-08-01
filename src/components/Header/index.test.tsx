@@ -6,6 +6,7 @@ import "@testing-library/jest-dom";
 jest.mock("../../hooks/useCartHook", () => ({
   useCartHook: () => ({
     quantidade: 5,
+    items: [],
   }),
 }));
 
@@ -16,7 +17,9 @@ describe("Header", () => {
     render(<Header />);
 
     expect(screen.getByText("AL SKIN")).toBeInTheDocument();
-    expect(screen.getByText("O que você está procurando?")).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText("O que você está procurando?")
+    ).toBeInTheDocument();
     expect(screen.getByText("Categorias")).toBeInTheDocument();
     expect(screen.getByText("5")).toBeInTheDocument();
   });
@@ -26,12 +29,12 @@ describe("Header", () => {
 
     const sacolaButton = screen.getByAltText("sacola de compras");
     fireEvent.click(sacolaButton);
-    expect(screen.getByText("Modal State: open")).toBeInTheDocument();
+    expect(screen.getByText("Seu carrinho está vazio")).toBeInTheDocument();
 
     const closeModalButton = screen.getByRole("button", {
-      name: /fechar modal/i,
+      name: /X/i,
     });
     fireEvent.click(closeModalButton);
-    expect(screen.getByText("Modal State: closed")).toBeInTheDocument();
+    expect(screen.queryByText("Seu carrinho está vazio")).not.toBeInTheDocument();
   });
 });

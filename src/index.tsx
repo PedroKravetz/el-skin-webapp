@@ -8,6 +8,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { CartProvider } from "./context/CartContext";
+import { ThemeProvider } from "styled-components";
+import { theme } from "./styles/themes";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -15,10 +17,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <CartProvider>
-      <GlobalStyle />
-      <AppRouter />
-    </CartProvider>
+    <ThemeProvider theme={theme}>
+      <CartProvider>
+        <GlobalStyle />
+        <AppRouter />
+      </CartProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 
