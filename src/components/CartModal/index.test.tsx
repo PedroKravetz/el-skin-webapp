@@ -27,7 +27,7 @@ describe("CartModal", () => {
   test("deve exibir a mensagem de carrinho vazio quando não houver itens", () => {
     mockedUseCartHook.mockReturnValue({
       items: [],
-      valor: 0,
+      totalPrice: 0,
     });
 
     render(<CartModal isOpen={true} onClose={onCloseMock} />);
@@ -56,7 +56,7 @@ describe("CartModal", () => {
 
     mockedUseCartHook.mockReturnValue({
       items: mockItems,
-      valor: 130, // 50*2 + 30*1
+      totalPrice: 130, // 50*2 + 30*1
     });
 
     render(<CartModal isOpen={true} onClose={onCloseMock} />);
@@ -66,7 +66,7 @@ describe("CartModal", () => {
     expect(screen.getByText("Produto B")).toBeInTheDocument();
 
     // Verifica se o valor total é exibido corretamente
-    expect(screen.getByText("130")).toBeInTheDocument();
+    expect(screen.getByText("R$ 130")).toBeInTheDocument();
   });
 
   // Teste 4: Testa a interatividade dos botões
@@ -88,9 +88,9 @@ describe("CartModal", () => {
     mockedUseCartHook.mockReturnValue({
       items: mockItems,
       valor: 50,
-      adicionarProduto: adicionarProdutoMock,
-      removerProduto: removerProdutoMock,
-      removerProdutoCarrinho: removerProdutoCarrinhoMock,
+      addItem: adicionarProdutoMock,
+      removeItem: removerProdutoMock,
+      updateQuantity: removerProdutoCarrinhoMock,
     });
 
     render(<CartModal isOpen={true} onClose={onCloseMock} />);
@@ -105,10 +105,10 @@ describe("CartModal", () => {
     expect(adicionarProdutoMock).toHaveBeenCalledWith(mockItems[0]);
 
     fireEvent.click(botoesRemover[0]);
-    expect(removerProdutoMock).toHaveBeenCalledWith(1); // O ID é '1', convertido para Number
+    expect(removerProdutoCarrinhoMock).toHaveBeenCalledWith("1", -1); // O ID é '1', convertido para Number
 
     fireEvent.click(botaoDeletar);
-    expect(removerProdutoCarrinhoMock).toHaveBeenCalledWith(1);
+    expect(removerProdutoMock).toHaveBeenCalledWith("1");
   });
 
   // Teste 5: Testa o botão de fechar o modal

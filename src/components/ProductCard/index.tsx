@@ -102,23 +102,22 @@ const Tag = styled.span`
 const getTagColor = (tag: number) => {
   tag = tag % 2;
   switch (tag) {
-    case 0:
-      return "#50E3C2"; // Azul-piscina
-    case 1:
-      return "#D965B0"; // Rosa
+  case 0:
+    return "#50E3C2"; // Azul-piscina
+  case 1:
+    return "#D965B0"; // Rosa
   }
 };
 
 function ProductCard(props: Readonly<PropsProductCard>) {
-  const { adicionarProduto } = useCartHook();
+  const { addItem } = useCartHook();
 
   const onClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    adicionarProduto({
+    addItem({
       id: String(props.id),
       name: props.nome,
       price: props.preco,
-      quantity: 0,
       image: props.srcImg,
     });
   };

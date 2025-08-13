@@ -1,3 +1,5 @@
+"use client";
+
 import BarraPesquisa from "../BarraPesquisa";
 import MenuNavegacao from "../MenuNavegacao";
 import sacolaCompras from "../../assets/sacola-de-compras.png";
@@ -41,7 +43,7 @@ function Header() {
     setIsCartModalOpen(false);
   }
 
-  const { quantidade } = useCartHook();
+  const { getTotalItems } = useCartHook();
 
   return (
     <HeaderContainer>
@@ -53,7 +55,7 @@ function Header() {
             alt="sacola de compras"
             onClick={handleOnClick}
           />
-          {quantidade}
+          {getTotalItems()}
         </div>
       </TopBar>
       <MenuNavegacao />

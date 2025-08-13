@@ -1,7 +1,9 @@
 import ProductCard from "../ProductCard";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useSearch } from "../../hooks/useSearchHook";
+import { useGetProductsQuery } from "../../store/apiSlice/apiSlice";
+import { Produto } from "../../types/types";
 
 const ShowcaseContainer = styled.div`
   display: grid;
@@ -11,27 +13,29 @@ const ShowcaseContainer = styled.div`
   max-width: 1200px;
 `;
 
-interface Produto {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  tags: string[];
-}
-
 function ProductShowcase() {
-  const [produtos, setProdutos] = useState<Produto[]>([]);
+  const { data: products = [], isLoading, error } = useGetProductsQuery();
+  const [produtosFiltrados, setProdutosFiltrados] = useState<Produto[]>([]);
+
+  const { term } = useSearch();
 
   useEffect(() => {
-    axios.get<Produto[]>("http://localhost:3001/products").then((resposta) => {
-      setProdutos(resposta.data);
-    });
-  }, []);
+    if (term.trim().length == 0) {
+      setProdutosFiltrados(products);
+    } else {
+      setProdutosFiltrados(
+        products.filter((produto) =>
+          produto.name.toLocaleLowerCase().includes(term.toLocaleLowerCase())
+        )
+      );
+    }
+  }, [products, term]);
 
   return (
     <ShowcaseContainer>
-      {produtos.map((produto) => (
+      {isLoading && <h1>Carregando...</h1>}
+      {error && <h1>Erro ao carregar produtos</h1>}
+      {produtosFiltrados.map((produto) => (
         <ProductCard
           key={produto.id}
           id={produto.id}

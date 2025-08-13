@@ -1,14 +1,20 @@
 import { render, screen } from "@testing-library/react";
-import { CartProvider } from "../../context/CartContext"; // 1. Importe o Provider
+import { store } from "../../store";
 import ProductShowcase from "./";
 import axios from "axios";
 import "@testing-library/jest-dom";
+import { Provider } from "react-redux";
+import { useSearch } from "../../hooks/useSearchHook"; // Import the hook itself
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
+jest.mock("../../hooks/useSearchHook", () => ({
+  useSearch: jest.fn(),
+}));
+const mockedUseSearch = useSearch as jest.Mock;
+
 const mockProdutos = [
-  // ... (seus dados mockados continuam iguais)
   {
     id: 1,
     name: "Sérum Hidratante Facial",
@@ -30,22 +36,35 @@ const mockProdutos = [
 describe("ProductShowcase", () => {
   test("deve renderizar os cards de produtos após a chamada da API", async () => {
     mockedAxios.get.mockResolvedValueOnce({ data: mockProdutos });
+    mockedUseSearch.mockReturnValue({ term: "" });
 
-    // 2. Envolva o componente com o Provider na hora de renderizar
     render(
-      <CartProvider>
+      <Provider store={store}>
         <ProductShowcase />
-      </CartProvider>
+      </Provider>
     );
 
-    const primeiroProduto = await screen.findByText("Sérum Hidratante Facial");
-
-    expect(primeiroProduto).toBeInTheDocument();
+    expect(
+      await screen.findByText("Sérum Hidratante Facial")
+    ).toBeInTheDocument();
     expect(screen.getByText("Protetor Solar FPS 50")).toBeInTheDocument();
+  });
 
-    expect(mockedAxios.get).toHaveBeenCalledTimes(1);
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      "http://localhost:3001/products"
+  test("deve filtrar e exibir apenas os produtos correspondentes ao termo de busca", async () => {
+    mockedAxios.get.mockResolvedValue({ data: mockProdutos });
+
+    mockedUseSearch.mockReturnValue({ term: "Protetor" });
+
+    render(
+      <Provider store={store}>
+        <ProductShowcase />
+      </Provider>
     );
+
+    const produtoVisivel = await screen.findByText("Protetor Solar FPS 50");
+    expect(produtoVisivel).toBeInTheDocument();
+
+    const produtoOculto = screen.queryByText("Sérum Hidratante Facial");
+    expect(produtoOculto).not.toBeInTheDocument();
   });
 });

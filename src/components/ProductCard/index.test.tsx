@@ -7,7 +7,7 @@ const mockAdicionarProduto = jest.fn();
 
 jest.mock("../../hooks/useCartHook", () => ({
   useCartHook: () => ({
-    adicionarProduto: mockAdicionarProduto,
+    addItem: mockAdicionarProduto,
   }),
 }));
 
@@ -65,7 +65,6 @@ describe("ProductCard", () => {
       id: String(mockProps.id),
       name: mockProps.nome,
       price: mockProps.preco,
-      quantity: 0,
       image: mockProps.srcImg,
     });
   });

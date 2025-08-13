@@ -22,3 +22,20 @@ export interface CarrosselItem {
     position: "left" | "center" | "right";
   };
 }
+
+export interface Produto {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  tags: string[];
+}
+
+export interface Carrousel {
+  id: number;
+  subtitle: string;
+  title: string;
+  description: string;
+  backgroundImage: string;
+}

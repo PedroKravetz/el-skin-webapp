@@ -7,9 +7,11 @@ import { GlobalStyle } from "./global";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { CartProvider } from "./context/CartContext";
+
 import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/themes";
+import { store } from "./store";
+import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,12 +19,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CartProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         <AppRouter />
-      </CartProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>
 );
 

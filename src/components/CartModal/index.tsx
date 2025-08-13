@@ -8,13 +8,8 @@ interface CartProps {
 }
 
 const CartModal = ({ isOpen, onClose }: CartProps) => {
-  const {
-    items,
-    adicionarProduto,
-    valor,
-    removerProduto,
-    removerProdutoCarrinho,
-  } = useCartHook();
+  const { items, addItem, totalPrice, removeItem, updateQuantity } =
+    useCartHook();
 
   if (!isOpen) {
     return null;
@@ -74,7 +69,7 @@ const CartModal = ({ isOpen, onClose }: CartProps) => {
                             className="quantity-btn"
                             onClick={(event) => {
                               event.stopPropagation();
-                              removerProduto(Number(item.id));
+                              updateQuantity(item.id, -1);
                             }}
                           >
                             -
@@ -86,7 +81,7 @@ const CartModal = ({ isOpen, onClose }: CartProps) => {
                             className="quantity-btn"
                             onClick={(event) => {
                               event.stopPropagation();
-                              adicionarProduto(item);
+                              addItem(item);
                             }}
                           >
                             +
@@ -98,7 +93,7 @@ const CartModal = ({ isOpen, onClose }: CartProps) => {
                           title="Remover item"
                           onClick={(event) => {
                             event.stopPropagation();
-                            removerProdutoCarrinho(Number(item.id));
+                            removeItem(item.id);
                           }}
                         >
                           Delete
@@ -115,7 +110,7 @@ const CartModal = ({ isOpen, onClose }: CartProps) => {
 
               <div className="cart-total">
                 <span className="total-label">Total</span>
-                <span className="total-price">{valor}</span>
+                <span className="total-price">R$ {totalPrice}</span>
               </div>
 
               <button className="finalize-btn">Finalizar compra</button>

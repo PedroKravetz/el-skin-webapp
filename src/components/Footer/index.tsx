@@ -1,3 +1,5 @@
+"use client";
+
 import facebook from "../../assets/facebook.png";
 import github from "../../assets/github.png";
 import instagram from "../../assets/instagram.png";
@@ -10,7 +12,7 @@ import { links } from "../../data/links";
 import styled from "styled-components";
 
 const FooterContainer = styled.footer`
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   padding: 2rem;
   border-top: 1px solid #eee;
 `;

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
@@ -11,11 +12,14 @@
     "@types/node": "^16.18.126",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "axios": "^1.10.0",
+    "axios": "^1.11.0",
+    "cross-env": "^10.0.0",
     "multiformats": "^9.9.0",
+    "next": "^15.4.6",
     "normalize.css": "^8.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.3",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.19",
@@ -24,9 +28,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "npx serve@latest ./build",
     "test": "jest --coverage",
+    "test:coverage": "cross-env CI=true react-scripts test --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -61,7 +67,6 @@
     "typescript-eslint": "^8.36.0"
   },
   "jest": {
-    "testEnvironment": "jsdom",
     "transform": {
       "^.+\\.(js|jsx|ts|tsx|mjs|cjs)$": "babel-jest"
     },

@@ -1,21 +1,11 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules"; // Adicionado Autoplay
+import { Navigation, Pagination, Autoplay } from "swiper/modules"; 
 import styled from "styled-components";
 
-// Estilos do Swiper
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { useEffect, useState } from "react";
-import axios from "axios";
-
-interface Carrousel {
-  id: number;
-  subtitle: string;
-  title: string;
-  description: string;
-  backgroundImage: string;
-}
+import { useGetCarouselItemsQuery } from "../../store/apiSlice/apiSlice";
 
 const ContentOverlay = styled.div`
   position: absolute;
@@ -113,43 +103,38 @@ const ActionButton = styled.a`
 `;
 
 function Carrossel() {
-  const [carrossel, setCarrossel] = useState<Carrousel[]>([]);
-
-  useEffect(() => {
-    axios
-      .get<Carrousel[]>("http://localhost:3001/carousel")
-      .then((resposta) => {
-        console.log(resposta.data);
-        setCarrossel(resposta.data);
-      });
-  }, []);
+  const { data: carrossel = [], isLoading, error } = useGetCarouselItemsQuery();
 
   return (
     <StyledSwiperContainer>
-      <Swiper
-        modules={[Navigation, Pagination, Autoplay]} // Autoplay adicionado
-        spaceBetween={0}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
-        loop={true}
-        centeredSlides={true}
-        autoplay={{ delay: 5000, disableOnInteraction: false }} // Rotação automática
-      >
-        {carrossel.map((item) => (
-          <SwiperSlide key={item.id}>
-            <SlideContainer>
-              <SlideImage src={item.backgroundImage} alt={item.description} />
-              <ContentOverlay>
-                {item.subtitle && <PreTitle>{item.subtitle}</PreTitle>}
-                <Title>{item.title}</Title>
-                {item.description && <Subtitle>{item.description}</Subtitle>}
-                <ActionButton>Comprar Agora &rarr;</ActionButton>
-              </ContentOverlay>
-            </SlideContainer>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {isLoading && <h1>Carregando...</h1>}
+      {error && <h1>Erro ao carregar Carrossel</h1>}
+      {!isLoading && !error && (
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]} // Autoplay adicionado
+          spaceBetween={0}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          loop={true}
+          centeredSlides={true}
+          autoplay={{ delay: 5000, disableOnInteraction: false }} // Rotação automática
+        >
+          {carrossel.map((item) => (
+            <SwiperSlide key={item.id}>
+              <SlideContainer>
+                <SlideImage src={item.backgroundImage} alt={item.description} />
+                <ContentOverlay>
+                  {item.subtitle && <PreTitle>{item.subtitle}</PreTitle>}
+                  <Title>{item.title}</Title>
+                  {item.description && <Subtitle>{item.description}</Subtitle>}
+                  <ActionButton>Comprar Agora &rarr;</ActionButton>
+                </ContentOverlay>
+              </SlideContainer>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </StyledSwiperContainer>
   );
 }

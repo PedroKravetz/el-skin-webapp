@@ -1,5 +1,6 @@
 import lupa from "../../assets/lupa.png";
 import styled from "styled-components";
+import { useSearch } from "../../hooks/useSearchHook";
 
 const SearchContainer = styled.div`
   position: relative;
@@ -41,9 +42,19 @@ const SearchIcon = styled.img`
 `;
 
 function BarraPesquisa() {
+  const { term, setTerm } = useSearch();
+
   return (
     <SearchContainer>
-      <SearchInput type="search" placeholder="O que você está procurando?" />
+      <SearchInput
+        type="search"
+        placeholder="O que você está procurando?"
+        value={term}
+        onChange={(event) => {
+          event.stopPropagation();
+          setTerm(event.target.value);
+        }}
+      />
       <SearchButton>
         <SearchIcon src={lupa} alt="lupa de pesquisa" />
       </SearchButton>

@@ -1,61 +1,72 @@
-import { CartItem, useCartContext } from "../context/CartContext";
+import { useDispatch, useSelector } from "react-redux";
+import { useMemo, useCallback } from "react";
+import type { RootState, AppDispatch } from "../store";
+import {
+  addItem,
+  removeItem,
+  updateQuantity,
+  clearCart,
+  ICartItem,
+} from "../store/slices/cartSlice";
 
-export const useCartHook = () => {
-  const { items, setItems, quantidade, valor } = useCartContext();
+export interface UseCartReturn {
+  items: ICartItem[];
+  addItem: (item: Omit<ICartItem, "quantity">) => void;
+  removeItem: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
+  clearCart: () => void;
+  getTotalItems: () => number;
+  totalPrice: number;
+}
 
-  function mudarQuantidade(id: number, quantidade: number) {
-    return items.map((itemDoCarrinho) => {
-      if (Number(itemDoCarrinho.id) === Number(id))
-        itemDoCarrinho.quantity += quantidade;
-      return itemDoCarrinho;
-    });
-  }
+export const useCartHook = (): UseCartReturn => {
+  const dispatch = useDispatch<AppDispatch>();
+  const items = useSelector((state: RootState) => state.cart.items);
 
-  function adicionarProduto(novoProduto: CartItem) {
-    const temOProduto = items.some(
-      (itemDoCarrinho) => itemDoCarrinho.id === novoProduto.id
+  const handleAddItem = useCallback(
+    (item: Omit<ICartItem, "quantity">) => {
+      dispatch(addItem(item));
+    },
+    [dispatch]
+  );
+
+  const handleRemoveItem = useCallback(
+    (id: string) => {
+      dispatch(removeItem({ id }));
+    },
+    [dispatch]
+  );
+
+  const handleUpdateQuantity = useCallback(
+    (id: string, quantity: number) => {
+      dispatch(updateQuantity({ id, quantity }));
+    },
+    [dispatch]
+  );
+
+  const handleClearCart = useCallback(() => {
+    dispatch(clearCart());
+  }, [dispatch]);
+
+  const getTotalItems = useCallback(() => {
+    return items.reduce((total, item) => total + item.quantity, 0);
+  }, [items]);
+
+  const totalPrice = useMemo(() => {
+    const total = items.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
     );
-
-    if (!temOProduto) {
-      novoProduto.quantity = 1;
-      return setItems((carrinhoAnterior) => [...carrinhoAnterior, novoProduto]);
-    }
-
-    const carrinhoAtualizado = mudarQuantidade(Number(novoProduto.id), 1);
-    setItems([...carrinhoAtualizado]);
-  }
-
-  function removerProduto(id: number) {
-    const produto = items.find(
-      (itemDoCarrinho) => Number(itemDoCarrinho.id) === Number(id)
-    );
-    const ehOUltimo = produto?.quantity === 1;
-    if (ehOUltimo) {
-      return setItems((carrinhoAnterior) =>
-        carrinhoAnterior.filter(
-          (itemDoCarrinho) => Number(itemDoCarrinho.id) !== Number(id)
-        )
-      );
-    }
-
-    const carrinhoAtualizado = mudarQuantidade(Number(id), -1);
-    setItems([...carrinhoAtualizado]);
-  }
-
-  function removerProdutoCarrinho(id: number) {
-    const produto = items.filter(
-      (itemDoCarrinho) => Number(itemDoCarrinho.id) !== Number(id)
-    );
-    setItems(produto);
-  }
+    return Number(total.toFixed(2));
+  }, [items]);
 
   return {
     items,
-    setItems,
-    adicionarProduto,
-    removerProduto,
-    removerProdutoCarrinho,
-    valor,
-    quantidade,
+    addItem: handleAddItem,
+    removeItem: handleRemoveItem,
+    updateQuantity: handleUpdateQuantity,
+    clearCart: handleClearCart,
+    getTotalItems,
+    totalPrice,
   };
 };
