@@ -1,9 +1,8 @@
 import ProductCard from "../ProductCard";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useSearch } from "../../hooks/useSearchHook";
 import { useGetProductsQuery } from "../../store/apiSlice/apiSlice";
-import { Produto } from "../../types/types";
 
 const ShowcaseContainer = styled.div`
   display: grid;
@@ -15,20 +14,17 @@ const ShowcaseContainer = styled.div`
 
 function ProductShowcase() {
   const { data: products = [], isLoading, error } = useGetProductsQuery();
-  const [produtosFiltrados, setProdutosFiltrados] = useState<Produto[]>([]);
 
   const { term } = useSearch();
 
-  useEffect(() => {
-    if (term.trim().length == 0) {
-      setProdutosFiltrados(products);
-    } else {
-      setProdutosFiltrados(
-        products.filter((produto) =>
-          produto.name.toLocaleLowerCase().includes(term.toLocaleLowerCase())
-        )
-      );
+  const produtosFiltrados = useMemo(() => {
+    const searchTerm = term.trim().toLocaleLowerCase();
+    if (searchTerm.length === 0) {
+      return products; // Retorna todos os produtos se a busca estiver vazia
     }
+    return products.filter((produto) =>
+      produto.name.toLocaleLowerCase().includes(searchTerm)
+    );
   }, [products, term]);
 
   return (

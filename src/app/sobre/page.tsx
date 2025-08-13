@@ -1,6 +1,5 @@
-import cremeHidratante from "../../assets/creme-hidratante.png";
-import cremeEspinhas from "../../assets/creme-espinhas.png";
-import locao from "../../assets/locao-corporal.png";
+"use client";
+
 import styled from "styled-components";
 
 const SobreContainer = styled.main`
@@ -140,11 +139,11 @@ function Sobre() {
               </p>
             </div>
           </TextContent>
-          <StyledImage src={cremeEspinhas} alt="Produto em close" />
+          <StyledImage src="/assets/creme-espinhas.png" alt="Produto em close" />
         </LeftColumn>
 
         <RightColumn>
-          <StyledImage src={locao} alt="Mão segurando produto" />
+          <StyledImage src="/assets/locao-corporal.png" alt="Mão segurando produto" />
           <DarumaContainer>
             <h3>DARUMA COMPANY</h3>
             <p>
@@ -155,7 +154,7 @@ function Sobre() {
         </RightColumn>
       </MainContent>
 
-      <FullWidthImage src={cremeHidratante} alt="Pessoa cuidando da pele" />
+      <FullWidthImage src="/assets/creme-hidratante.png" alt="Pessoa cuidando da pele" />
     </SobreContainer>
   );
 }

@@ -1,12 +1,5 @@
 "use client";
 
-import facebook from "../../assets/facebook.png";
-import github from "../../assets/github.png";
-import instagram from "../../assets/instagram.png";
-import linkedin from "../../assets/linkedin.png";
-import tiktok from "../../assets/tiktok.png";
-import twitter from "../../assets/twitter.png";
-import whatsapp from "../../assets/whatsapp.png";
 import FooterLinks from "../FooterLinks";
 import { links } from "../../data/links";
 import styled from "styled-components";
@@ -33,13 +26,13 @@ function Footer() {
   return (
     <FooterContainer>
       <SocialIcons>
-        <img src={facebook} alt="facebook logo" />
-        <img src={github} alt="github logo" />
-        <img src={instagram} alt="instagram logo" />
-        <img src={linkedin} alt="linkedin logo" />
-        <img src={tiktok} alt="tiktok logo" />
-        <img src={twitter} alt="twitter logo" />
-        <img src={whatsapp} alt="whatsapp logo" />
+        <img src="/assets/facebook.png" alt="facebook logo" />
+        <img src="/assets/github.png" alt="github logo" />
+        <img src="/assets/instagram.png" alt="instagram logo" />
+        <img src="/assets/linkedin.png" alt="linkedin logo" />
+        <img src="/assets/tiktok.png" alt="tiktok logo" />
+        <img src="/assets/twitter.png" alt="twitter logo" />
+        <img src="/assets/whatsapp.png" alt="whatsapp logo" />
       </SocialIcons>
       <FooterLinks link={links} />
     </FooterContainer>

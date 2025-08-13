@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import sacola from "../../assets/sacola-de-compras.png";
 import { useCartHook } from "../../hooks/useCartHook";
 
 interface PropsProductCard {
@@ -148,7 +147,7 @@ function ProductCard(props: Readonly<PropsProductCard>) {
           }}
         >
           comprar
-          <CartIcon src={sacola} alt="Ícone de sacola de compras" />
+          <CartIcon src="/assets/sacola-de-compras.png" alt="Ícone de sacola de compras" />
         </BuyButton>
       </ActionContainer>
     </CardContainer>

@@ -1,4 +1,3 @@
-import lupa from "../../assets/lupa.png";
 import styled from "styled-components";
 import { useSearch } from "../../hooks/useSearchHook";
 
@@ -56,7 +55,7 @@ function BarraPesquisa() {
         }}
       />
       <SearchButton>
-        <SearchIcon src={lupa} alt="lupa de pesquisa" />
+        <SearchIcon src="/assets/lupa.png" alt="lupa de pesquisa" />
       </SearchButton>
     </SearchContainer>
   );

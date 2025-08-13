@@ -2,7 +2,6 @@
 
 import BarraPesquisa from "../BarraPesquisa";
 import MenuNavegacao from "../MenuNavegacao";
-import sacolaCompras from "../../assets/sacola-de-compras.png";
 import Logo from "../Logo";
 import styled from "styled-components";
 import CartModal from "../CartModal";
@@ -51,7 +50,7 @@ function Header() {
         <Logo /> <BarraPesquisa />
         <div>
           <SacolaDeCompras
-            src={sacolaCompras}
+            src="/assets/sacola-de-compras.png"
             alt="sacola de compras"
             onClick={handleOnClick}
           />
