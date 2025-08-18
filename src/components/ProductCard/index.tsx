@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import sacola from "../../assets/sacola-de-compras.png";
+import { useCartHook } from "../../hooks/useCartHook";
 
 interface PropsProductCard {
   srcImg: string;
   alt: string;
   nome: string;
-  preco: string;
+  preco: number;
   descricao: string;
   tags: string[];
+  id: number;
 }
 
 const CardContainer = styled.div`
@@ -97,20 +98,29 @@ const Tag = styled.span`
   text-transform: lowercase;
 `;
 
-const getTagColor = (tag: string) => {
-  switch (tag.toLowerCase()) {
-  case "proteção":
+const getTagColor = (tag: number) => {
+  tag = tag % 2;
+  switch (tag) {
+  case 0:
     return "#50E3C2"; // Azul-piscina
-  case "rosto":
+  case 1:
     return "#D965B0"; // Rosa
-  case "corpo":
-    return "#F5A623"; // Laranja para variedade
-  default:
-    return "#ccc";
   }
 };
 
 function ProductCard(props: Readonly<PropsProductCard>) {
+  const { addItem } = useCartHook();
+
+  const onClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    addItem({
+      id: String(props.id),
+      name: props.nome,
+      price: props.preco,
+      image: props.srcImg,
+    });
+  };
+
   return (
     <CardContainer>
       <ProductImage
@@ -121,8 +131,8 @@ function ProductCard(props: Readonly<PropsProductCard>) {
       <ProductDescription>{props.descricao}</ProductDescription>
 
       <TagsContainer>
-        {props.tags?.map((tag) => (
-          <Tag key={tag} color={getTagColor(tag)}>
+        {props.tags?.map((tag, index) => (
+          <Tag key={tag} color={getTagColor(index)}>
             {tag}
           </Tag>
         ))}
@@ -130,10 +140,14 @@ function ProductCard(props: Readonly<PropsProductCard>) {
 
       {/* Container para agrupar preço e botão */}
       <ActionContainer>
-        <ProductPrice>{props.preco}</ProductPrice>
-        <BuyButton>
+        <ProductPrice>{"R$ " + props.preco.toFixed(2)}</ProductPrice>
+        <BuyButton
+          onClick={(event) => {
+            onClick(event);
+          }}
+        >
           comprar
-          <CartIcon src={sacola} alt="Ícone de sacola de compras" />
+          <CartIcon src="/assets/sacola-de-compras.png" alt="Ícone de sacola de compras" />
         </BuyButton>
       </ActionContainer>
     </CardContainer>

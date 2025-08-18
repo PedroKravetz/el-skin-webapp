@@ -1,6 +1,8 @@
+"use client";
+
 import styled from "styled-components";
-import ProductShowcase from "../../components/ProductShowCase";
-import Carrossel from "../../components/Carrossel";
+import ProductShowcase from "../components/ProductShowCase";
+import Carrossel from "../components/Carrossel";
 
 const HomeContainer = styled.main`
   width: 100%;

@@ -1,6 +1,8 @@
 import ProductCard from "../ProductCard";
-import { produtos } from "../../data/produtos";
 import styled from "styled-components";
+import { useMemo } from "react";
+import { useSearch } from "../../hooks/useSearchHook";
+import { useGetProductsQuery } from "../../store/apiSlice/apiSlice";
 
 const ShowcaseContainer = styled.div`
   display: grid;
@@ -11,16 +13,33 @@ const ShowcaseContainer = styled.div`
 `;
 
 function ProductShowcase() {
+  const { data: products = [], isLoading, error } = useGetProductsQuery();
+
+  const { term } = useSearch();
+
+  const produtosFiltrados = useMemo(() => {
+    const searchTerm = term.trim().toLocaleLowerCase();
+    if (searchTerm.length === 0) {
+      return products; // Retorna todos os produtos se a busca estiver vazia
+    }
+    return products.filter((produto) =>
+      produto.name.toLocaleLowerCase().includes(searchTerm)
+    );
+  }, [products, term]);
+
   return (
     <ShowcaseContainer>
-      {produtos.map((produto) => (
+      {isLoading && <h1>Carregando...</h1>}
+      {error && <h1>Erro ao carregar produtos</h1>}
+      {produtosFiltrados.map((produto) => (
         <ProductCard
           key={produto.id}
-          srcImg={produto.srcImg}
-          alt={produto.alt}
-          nome={produto.nome}
-          descricao={produto.descricao}
-          preco={produto.preco}
+          id={produto.id}
+          srcImg={produto.image}
+          alt={produto.description}
+          nome={produto.name}
+          descricao={produto.description}
+          preco={produto.price}
           tags={produto.tags}
         />
       ))}
